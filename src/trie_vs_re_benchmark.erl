@@ -8,6 +8,7 @@
     find_re/2,
     find_ah/2,
     find_jtrie/2,
+    find_re2/2,
     run_n_times/4
 ]).
 
@@ -31,6 +32,7 @@ test_with_set_size(Size) ->
     StopWords = readlines("unallowed_word_parts_shuffle.csv", Size),
     Re = string:join(lists:sort([escape_word_for_re(Word) || Word <- StopWords]), "|"),
     {ok, CompiledRe} = re:compile(Re, [unicode]),
+    {ok, CompiledRe2} = re2:compile(unicode:characters_to_binary(Re)),
     Trie = trie:new(StopWords),
     Ah = ahocorasick:build_dicts([unicode:characters_to_binary(W) || W <- StopWords]),
     JTrie = lists:foldl(fun juise_trie:add_leaf/2, juise_trie:new(), StopWords),
@@ -45,11 +47,13 @@ test_with_set_size(Size) ->
     test_avg(?MODULE, find_strstr, [Message, StopWords], 50),
     io:format("regexp:  "),
     test_avg(?MODULE, find_re, [Message, CompiledRe], 50),
+    io:format(" re2:    "),
+    test_avg(?MODULE, find_re2, [Message, CompiledRe2], 50),
     io:format("trie:    "),
     test_avg(?MODULE, find_trie, [Message, Trie], 50),
     io:format("ahoc:    "),
     test_avg(?MODULE, find_ah, [Message, Ah], 50),
-    io:format("jtrie:    "),
+    io:format("juis:    "),
     test_avg(?MODULE, find_jtrie, [Message, JTrie], 50),
 
     garbage_collect().
@@ -64,6 +68,9 @@ find_re(Msg, Re) ->
         {match, [Value]} ->
             Value
     end.
+
+find_re2(Msg, Re) ->
+    re2:match(unicode:characters_to_binary(Msg), Re, [{capture, first}]).
 
 find_trie([_|Tail] = Msg, Trie) ->
     case trie:find_prefix_longest(Msg, Trie) of

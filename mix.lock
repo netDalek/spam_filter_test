@@ -1,4 +1,5 @@
 %{"ahocorasick": {:git, "https://github.com/josemic/ahocorasick.git", "0b57f0a44e91ee1aa31fa8ad0af12b1e69c3f41c", []},
+  "re2": {:git, "https://github.com/tuncer/re2.git", "2471e06ed7e548ca1af522e95b16867135afdfdc", []},
   "remix": {:hex, :remix, "0.0.2", "f06115659d8ede8d725fae1708920ef73353a1b39efe6a232d2a38b1f2902109", [:mix], []},
   "trie": {:git, "https://github.com/okeuday/trie.git", "37391d3e705383ff513e7ebcef085b6bfefd0459", []},
   "trie2": {:git, "https://github.com/juise/trie.git", "ade951f2826e7e51e7ae0e979ad7bcd64b8ec88e", []}}

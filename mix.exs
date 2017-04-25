@@ -30,7 +30,8 @@ defmodule SpamFilterTest.Mixfile do
   defp deps do
     [
        {:trie, github: "okeuday/trie"},
-       {:remix, "~> 0.0.1", only: :dev}
+       {:remix, "~> 0.0.1", only: :dev},
+       {:re2, github: "tuncer/re2"}
        #{:trie, github: "mix.exs"}
        
     ]
