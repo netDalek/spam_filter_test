@@ -7,6 +7,7 @@
     find_trie/2,
     find_re/2,
     find_ah/2,
+    find_jtrie/2,
     run_n_times/4
 ]).
 
@@ -32,6 +33,8 @@ test_with_set_size(Size) ->
     {ok, CompiledRe} = re:compile(Re, [unicode]),
     Trie = trie:new(StopWords),
     Ah = ahocorasick:build_dicts([unicode:characters_to_binary(W) || W <- StopWords]),
+    JTrie = lists:foldl(fun juise_trie:add_leaf/2, juise_trie:new(), StopWords),
+    juise_trie:search_prefix_leaf("dd", JTrie),
 
 %%    io:format("stop words: ~p~n", [lists:nth(8, StopWords)]),
 %%    io:format("strstr result: ~p~n", [find_strstr(Message, StopWords)]),
@@ -46,6 +49,8 @@ test_with_set_size(Size) ->
     test_avg(?MODULE, find_trie, [Message, Trie], 50),
     io:format("ahoc:    "),
     test_avg(?MODULE, find_ah, [Message, Ah], 50),
+    io:format("jtrie:    "),
+    test_avg(?MODULE, find_jtrie, [Message, JTrie], 50),
 
     garbage_collect().
 
@@ -71,6 +76,8 @@ find_trie(_, _Trie) ->
 find_ah(Msg, {A, B, C}) ->
     ahocorasick:find(A, B, C, unicode:characters_to_binary(Msg)).
 
+find_jtrie(Msg, JTrie) ->
+    juise_trie:search_prefix_leaf(Msg, JTrie).
 
 test_avg(M, F, A, N) when N > 0 ->
     L = test_loop(M, F, A, N, []),

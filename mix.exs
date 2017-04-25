@@ -31,6 +31,8 @@ defmodule SpamFilterTest.Mixfile do
     [
        {:trie, github: "okeuday/trie"},
        {:remix, "~> 0.0.1", only: :dev}
+       #{:trie, github: "mix.exs"}
+       
     ]
   end
 end
