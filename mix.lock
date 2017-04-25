@@ -1,0 +1,3 @@
+%{"ahocorasick": {:git, "https://github.com/josemic/ahocorasick.git", "0b57f0a44e91ee1aa31fa8ad0af12b1e69c3f41c", []},
+  "remix": {:hex, :remix, "0.0.2", "f06115659d8ede8d725fae1708920ef73353a1b39efe6a232d2a38b1f2902109", [:mix], []},
+  "trie": {:git, "https://github.com/okeuday/trie.git", "37391d3e705383ff513e7ebcef085b6bfefd0459", []}}
