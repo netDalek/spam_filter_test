@@ -2,7 +2,7 @@
 
 %% API
 -export([
-    benchmark/0,
+    run/0,
     find_strstr/2,
     find_trie/2,
     find_re/2,
@@ -12,7 +12,7 @@
     run_n_times/4
 ]).
 
-benchmark() ->
+run() ->
     test_with_set_size(100),
     test_with_set_size(200),
     test_with_set_size(300),
@@ -38,10 +38,10 @@ test_with_set_size(Size) ->
     JTrie = lists:foldl(fun juise_trie:add_leaf/2, juise_trie:new(), StopWords),
     juise_trie:search_prefix_leaf("dd", JTrie),
 
-    io:format("strstr result: ~ts~n", [find_strstr("героин", StopWords)]),
-    io:format("re result:     ~ts~n", [find_re("героин", CompiledRe)]),
-    io:format("trie result:   ~ts~n", [find_trie("героин", Trie)]),
-    io:format("re2 result:    ~ts~n", [find_re2("героин", CompiledRe2)]),
+    % io:format("strstr result: ~ts~n", [find_strstr("героин", StopWords)]),
+    % io:format("re result:     ~ts~n", [find_re("героин", CompiledRe)]),
+    % io:format("trie result:   ~ts~n", [find_trie("героин", Trie)]),
+    % io:format("re2 result:    ~ts~n", [find_re2("героин", CompiledRe2)]),
 
     io:format("strstr:  "),
     test_avg(?MODULE, find_strstr, [Message, StopWords], 50),
