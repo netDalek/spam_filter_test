@@ -1,4 +1,4 @@
--module(trie_vs_re_benchmark).
+-module(benchmark).
 
 %% API
 -export([
@@ -38,10 +38,10 @@ test_with_set_size(Size) ->
     JTrie = lists:foldl(fun juise_trie:add_leaf/2, juise_trie:new(), StopWords),
     juise_trie:search_prefix_leaf("dd", JTrie),
 
-%%    io:format("stop words: ~p~n", [lists:nth(8, StopWords)]),
-%%    io:format("strstr result: ~p~n", [find_strstr(Message, StopWords)]),
-%%    io:format("re result:     ~p~n", [find_re(Message, CompiledRe)]),
-%%    io:format("trie result:   ~p~n", [find_trie(Message, Trie)]),
+    io:format("strstr result: ~ts~n", [find_strstr("героин", StopWords)]),
+    io:format("re result:     ~ts~n", [find_re("героин", CompiledRe)]),
+    io:format("trie result:   ~ts~n", [find_trie("героин", Trie)]),
+    io:format("re2 result:    ~ts~n", [find_re2("героин", CompiledRe2)]),
 
     io:format("strstr:  "),
     test_avg(?MODULE, find_strstr, [Message, StopWords], 50),
@@ -70,7 +70,10 @@ find_re(Msg, Re) ->
     end.
 
 find_re2(Msg, Re) ->
-    re2:match(unicode:characters_to_binary(Msg), Re, [{capture, first}]).
+    case re2:match(unicode:characters_to_binary(Msg), Re, [{capture, first}]) of
+        nomatch -> undefined;
+        {match, [A]} -> A
+    end.
 
 find_trie([_|Tail] = Msg, Trie) ->
     case trie:find_prefix_longest(Msg, Trie) of
